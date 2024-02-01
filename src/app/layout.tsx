@@ -1,4 +1,5 @@
 import StyledComponentsRegistry from "./lib/registery";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import "./globals.css";
 
 export default function RootLayout({
@@ -9,7 +10,11 @@ export default function RootLayout({
   return (
     <html>
       <StyledComponentsRegistry>
-        <body>{children}</body>
+        <body>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            {children}
+          </AppRouterCacheProvider>
+        </body>
       </StyledComponentsRegistry>
     </html>
   );

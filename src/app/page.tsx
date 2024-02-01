@@ -1,9 +1,14 @@
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "./ui/theme";
 import { Layout } from "./ui/layout/Layout";
+import { TopBar } from "./components/top-bar/TopBar";
 
 export default function Home() {
   return (
-    <Layout>
-      <h1>Home</h1>
-    </Layout>
+    <ThemeProvider theme={theme}>
+      <Layout>
+        <TopBar />
+      </Layout>
+    </ThemeProvider>
   );
 }
