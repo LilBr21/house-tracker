@@ -1,4 +1,5 @@
 "use client";
+import { FormEvent } from "react";
 import {
   FormGroup,
   FormControl,
@@ -16,6 +17,20 @@ interface AuthFormProps {
 }
 
 export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    console.log(formData);
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+    });
+    console.log(response);
+  };
+
   return (
     <Box
       sx={{
@@ -27,54 +42,59 @@ export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
       }}
     >
       <Heading $size={HeadingSize.Large}>{title}</Heading>
-      <FormGroup
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-          width: "400px",
-          padding: "64px",
-        }}
-      >
-        <FormControl>
-          <InputLabel
-            sx={{ color: `${customTheme.colors.textPrimary}` }}
-            htmlFor="email"
-          >
-            Email
-          </InputLabel>
-          <Input
-            sx={{
-              backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-              padding: "12px",
-              color: `${customTheme.colors.textPrimary}`,
-              borderRadius: "4px",
-            }}
-            id="email"
-            type="email"
-            placeholder="Email address"
-          />
-        </FormControl>
-        <FormControl>
-          <InputLabel
-            sx={{ color: `${customTheme.colors.textPrimary}` }}
-            htmlFor="password"
-          >
-            Password
-          </InputLabel>
-          <Input
-            sx={{
-              backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-              padding: "12px",
-              color: `${customTheme.colors.textPrimary}`,
-              borderRadius: "4px",
-            }}
-            id="password"
-            type="password"
-          />
-        </FormControl>
-        <Button type="submit">{buttonText}</Button>
-      </FormGroup>
+      <form onSubmit={handleSubmit}>
+        <FormGroup
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            width: "400px",
+            padding: "64px",
+          }}
+        >
+          <FormControl>
+            <InputLabel
+              sx={{ color: `${customTheme.colors.textPrimary}` }}
+              htmlFor="email"
+            >
+              Email
+            </InputLabel>
+            <Input
+              sx={{
+                backgroundColor: `${customTheme.colors.backgroundSecondary}`,
+                padding: "12px",
+                color: `${customTheme.colors.textPrimary}`,
+                borderRadius: "4px",
+              }}
+              id="email"
+              type="email"
+              placeholder="Email address"
+              name="email"
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel
+              sx={{ color: `${customTheme.colors.textPrimary}` }}
+              htmlFor="password"
+            >
+              Password
+            </InputLabel>
+            <Input
+              sx={{
+                backgroundColor: `${customTheme.colors.backgroundSecondary}`,
+                padding: "12px",
+                color: `${customTheme.colors.textPrimary}`,
+                borderRadius: "4px",
+              }}
+              id="password"
+              type="password"
+              placeholder="Password"
+              name="password"
+            />
+          </FormControl>
+          <Button type="submit">{buttonText}</Button>
+        </FormGroup>
+      </form>
     </Box>
   );
 };

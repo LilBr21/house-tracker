@@ -44,8 +44,8 @@ export const authConfig = {
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-              email: { label: "Email", type: "email" },
-              password: { label: "Password", type: "password" }
+              email: { },
+              password: { }
             },
             async authorize(credentials: any, req: any) {
                 const { email, password } = credentials;
