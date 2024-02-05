@@ -3,6 +3,9 @@ const nextConfig = {
     compiler: {
         styledComponents: true,
       },
+    experimental: {
+      serverComponentsExternalPackages: ['bcrypt'],
+    },
 };
 
 export default nextConfig;

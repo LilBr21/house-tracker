@@ -1,5 +1,5 @@
-import { AuthForm } from "../ui/auth-form/AuthForm";
+import { LoginForm } from "../components/login-form/LoginForm";
 
 export default async function LoginPage() {
-  return <AuthForm title="Log in to your account" buttonText="Log in" />;
+  return <LoginForm />;
 }

@@ -2,7 +2,7 @@ import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { User } from './src/app/lib/definitions';
 import { sql } from '@vercel/postgres';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 
 async function getUser(email: string): Promise<User | undefined> {
@@ -18,18 +18,21 @@ async function getUser(email: string): Promise<User | undefined> {
   
  
 export const authConfig = {
+  session: {
+    strategy: 'jwt',
+  },
   pages: {
     signIn: '/login',
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnHome = nextUrl.pathname.startsWith('/home');
+      const isOnHome = nextUrl.pathname === '/';
       if (isOnHome) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/home', nextUrl));
+        return Response.redirect(new URL('/', nextUrl));
       }
       return true;
     },
@@ -43,12 +46,9 @@ export const authConfig = {
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
-            credentials: {
-              email: { },
-              password: { }
-            },
-            async authorize(credentials: any, req: any) {
+            async authorize(credentials: any) {
                 const { email, password } = credentials;
+                console.log(credentials)
                 const user = await getUser(email);
               
                 if (user && user.password) {

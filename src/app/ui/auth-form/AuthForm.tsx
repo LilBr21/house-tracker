@@ -8,29 +8,22 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { Heading, HeadingSize } from "../heading/Heading";
-import { customTheme } from "../theme";
+import { authenticate } from "@/app/lib/actions";
+import { Heading, HeadingSize } from "../../ui/heading/Heading";
+import { customTheme } from "../../ui/theme";
+
+export enum ActionType {
+  Login = "login",
+  Register = "register",
+}
 
 interface AuthFormProps {
   title: string;
   buttonText: string;
+  actionType: ActionType;
 }
 
-export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    console.log(formData);
-    const response = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify({
-        email: formData.get("email"),
-        password: formData.get("password"),
-      }),
-    });
-    console.log(response);
-  };
-
+export const AuthForm = ({ title, buttonText, actionType }: AuthFormProps) => {
   return (
     <Box
       sx={{
@@ -42,7 +35,11 @@ export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
       }}
     >
       <Heading $size={HeadingSize.Large}>{title}</Heading>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e: FormEvent<HTMLFormElement>) =>
+          authenticate(actionType, new FormData(e.currentTarget))
+        }
+      >
         <FormGroup
           sx={{
             display: "flex",

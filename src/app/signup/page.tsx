@@ -1,10 +1,5 @@
-import { AuthForm } from "../ui/auth-form/AuthForm";
+import { SignupForm } from "../components/signup-form/SignupForm";
 
 export default async function SignUpPage() {
-  return (
-    <AuthForm
-      title="Sign up to start using House tracker"
-      buttonText="Sign up"
-    />
-  );
+  return <SignupForm />;
 }
