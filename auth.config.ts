@@ -18,14 +18,11 @@ async function getUser(email: string): Promise<User | undefined> {
   
  
 export const authConfig = {
-  session: {
-    strategy: 'jwt',
-  },
   pages: {
-    signIn: '/login',
+    signIn: '/',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnHome = nextUrl.pathname === '/';
       if (isOnHome) {
@@ -42,6 +39,7 @@ export const authConfig = {
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
             name: "Sign in",
+            id: "credentials",
             // `credentials` is used to generate a form on the sign in page.
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, username, password, 2FA token, etc.

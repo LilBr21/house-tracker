@@ -1,5 +1,4 @@
 "use client";
-import { FormEvent } from "react";
 import {
   FormGroup,
   FormControl,
@@ -8,9 +7,10 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { authenticate } from "@/app/lib/actions";
+import { loginAuthenticate, signupAuthenticate } from "@/app/lib/actions";
 import { Heading, HeadingSize } from "../../ui/heading/Heading";
 import { customTheme } from "../../ui/theme";
+import { useFormState } from "react-dom";
 
 export enum ActionType {
   Login = "login",
@@ -23,7 +23,12 @@ interface AuthFormProps {
   actionType: ActionType;
 }
 
-export const AuthForm = ({ title, buttonText, actionType }: AuthFormProps) => {
+export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
+  const [errorMessage, dispatch] = useFormState<any, FormData>(
+    loginAuthenticate,
+    undefined
+  );
+
   return (
     <Box
       sx={{
@@ -35,11 +40,7 @@ export const AuthForm = ({ title, buttonText, actionType }: AuthFormProps) => {
       }}
     >
       <Heading $size={HeadingSize.Large}>{title}</Heading>
-      <form
-        onSubmit={(e: FormEvent<HTMLFormElement>) =>
-          authenticate(actionType, new FormData(e.currentTarget))
-        }
-      >
+      <form action={dispatch}>
         <FormGroup
           sx={{
             display: "flex",
