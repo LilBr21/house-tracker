@@ -1,6 +1,6 @@
 'use server';
 import { isRedirectError } from 'next/dist/client/components/redirect';
-import { signIn } from '../../../auth';
+import { signIn, auth, signOut } from '../../../auth';
 
 export const loginAuthenticate = async (prevState: string | undefined, formData: FormData) => {
       try {
@@ -36,4 +36,17 @@ export const signupAuthenticate = async (prevState: string | undefined, formData
         throw error;
       }
     }
+};
+
+export const isSignedIn = async () => {
+  const session = await auth();
+  if (session?.user) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const logOut = async () => {
+  await signOut({ redirect: true, redirectTo: "/login" });
 };
