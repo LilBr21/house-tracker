@@ -11,7 +11,6 @@ export const loginAuthenticate = async (prevState: string | undefined, formData:
           redirect: true,
           redirectTo: "/",
         });
-        console.log({ response });
       } catch (error) {
         if (isRedirectError(error)) {
           throw error;
@@ -20,22 +19,28 @@ export const loginAuthenticate = async (prevState: string | undefined, formData:
 };
 
 export const signupAuthenticate = async (prevState: string | undefined, formData: FormData) => {
-  console.log('authenticating', prevState, formData.get("email"), formData.get("password"));
-  if (prevState !== undefined) {
       try {
-        const response = await fetch("/api/register", {
+        const response = await fetch(`${process.env.APP_URL}/api/register`, {
           method: "POST",
           body: JSON.stringify({
             email: formData.get("email"),
             password: formData.get("password"),
           }),
         });
+        if (response.ok) {
+          const response = await signIn("credentials", {
+            email: formData.get("email"),
+            password: formData.get("password"),
+            callbackUrl: "/",
+            redirect: true,
+            redirectTo: "/",
+          });
+        }
       } catch (error) {
-        console.log({ error });
-        console.error('Failed to sign up:', error);
-        throw error;
+        if (isRedirectError(error)) {
+          throw error;
       }
-    }
+      }
 };
 
 export const isSignedIn = async () => {

@@ -46,7 +46,6 @@ export const authConfig = {
             // You can pass any HTML attribute to the <input> tag through the object.
             async authorize(credentials: any) {
                 const { email, password } = credentials;
-                console.log(credentials)
                 const user = await getUser(email);
               
                 if (user && user.password) {

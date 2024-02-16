@@ -54,7 +54,7 @@ export const TopBar = () => {
     setAuthButtonText(generateAuthButtonText());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathName]);
+  }, [pathName, isAuthenticated]);
 
   return (
     <Box

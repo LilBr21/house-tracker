@@ -23,9 +23,14 @@ interface AuthFormProps {
   actionType: ActionType;
 }
 
-export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
-  const [errorMessage, dispatch] = useFormState<any, FormData>(
+export const AuthForm = ({ title, buttonText, actionType }: AuthFormProps) => {
+  const [loginErrorMessage, loginDispatch] = useFormState<any, FormData>(
     loginAuthenticate,
+    undefined
+  );
+
+  const [signupErrorMessage, signupDispatch] = useFormState<any, FormData>(
+    signupAuthenticate,
     undefined
   );
 
@@ -40,7 +45,11 @@ export const AuthForm = ({ title, buttonText }: AuthFormProps) => {
       }}
     >
       <Heading $size={HeadingSize.Large}>{title}</Heading>
-      <form action={dispatch}>
+      <form
+        action={
+          actionType === ActionType.Login ? loginDispatch : signupDispatch
+        }
+      >
         <FormGroup
           sx={{
             display: "flex",
