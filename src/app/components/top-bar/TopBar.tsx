@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { customTheme } from "@/app/ui/theme";
@@ -8,6 +9,11 @@ import { isSignedIn, logOut } from "@/app/lib/actions";
 
 export const TopBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authButtonText, setAuthButtonText] = useState("");
+  const router = useRouter();
+  const pathName = usePathname();
+
+  const isOnLoginPage = pathName === "/login";
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -17,6 +23,38 @@ export const TopBar = () => {
     checkAuthentication();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const generateAuthButtonText = () => {
+    if (isAuthenticated) {
+      return "Log out";
+    } else if (isOnLoginPage) {
+      return "Sign up";
+    } else {
+      return "Log in";
+    }
+  };
+
+  const handleAuthButtonClick = (buttonName: string) => {
+    switch (buttonName) {
+      case "Log in":
+        router.push("/login");
+        break;
+      case "Sign up":
+        router.push("/signup");
+        break;
+      case "Log out":
+        logOut();
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    setAuthButtonText(generateAuthButtonText());
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathName]);
 
   return (
     <Box
@@ -31,11 +69,18 @@ export const TopBar = () => {
     >
       <Heading $size={HeadingSize.Large}>House tracker</Heading>
       <div>
-        <Button color="primary">Tasks</Button>
-        <Button color="primary">Summary</Button>
-        <Button color="primary">Settings</Button>
-        <Button color="primary" onClick={() => logOut()}>
-          {isAuthenticated ? "Logout" : "Login"}
+        {isAuthenticated && (
+          <>
+            <Button color="primary">Tasks</Button>
+            <Button color="primary">Summary</Button>
+            <Button color="primary">Settings</Button>
+          </>
+        )}
+        <Button
+          color="primary"
+          onClick={() => handleAuthButtonClick(authButtonText)}
+        >
+          {authButtonText}
         </Button>
       </div>
     </Box>
