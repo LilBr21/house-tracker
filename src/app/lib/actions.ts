@@ -43,9 +43,36 @@ export const signupAuthenticate = async (prevState: string | undefined, formData
       }
 };
 
+export const getHousehold = async (id: string) => {
+  try {
+    const response = await fetch(`${process.env.APP_URL}/api/household/${id}`);
+    const household = await response.json();
+    return household;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const session = await auth();
+    const email = session?.user?.email;
+    console.log('email lib', email)
+    const response = await fetch(`${process.env.APP_URL}/api/users/?email=${email}`, {
+      method: "GET"
+    });
+    console.log('response', response)
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const isSignedIn = async () => {
   const session = await auth();
   if (session?.user) {
+    console.log(session);
     return true;
   } else {
     return false;

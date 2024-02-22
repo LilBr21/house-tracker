@@ -9,8 +9,9 @@ export enum HeadingSize {
   Small = "small",
 }
 
-export const Heading = styled.h1<{ $size?: HeadingSize }>`
-  color: ${customTheme.colors.textPrimary};
+export const Heading = styled.h1<{ $size?: HeadingSize; $color?: string }>`
+  color: ${({ $color }) =>
+    $color ? `${$color}` : `${customTheme.colors.textPrimary}`};
   font-size: ${({ $size }) =>
     $size === HeadingSize.Large
       ? customTheme.fontSizes.large
