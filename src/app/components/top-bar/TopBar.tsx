@@ -1,10 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import { Button, Box, Typography } from "@mui/material";
 import { customTheme } from "@/app/ui/theme";
-import { Heading, HeadingSize } from "@/app/ui/heading/Heading";
 import { isSignedIn, logOut } from "@/app/lib/actions";
 
 export const TopBar = () => {
@@ -67,7 +65,7 @@ export const TopBar = () => {
         borderBottom: `1px solid ${customTheme.colors.backgroundSecondary}`,
       }}
     >
-      <Heading $size={HeadingSize.Large}>House tracker</Heading>
+      <Typography variant="h5">House tracker</Typography>
       <div>
         {isAuthenticated && (
           <>

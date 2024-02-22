@@ -6,9 +6,9 @@ import {
   InputLabel,
   Button,
   Box,
+  Typography,
 } from "@mui/material";
 import { loginAuthenticate, signupAuthenticate } from "@/app/lib/actions";
-import { Heading, HeadingSize } from "../../ui/heading/Heading";
 import { customTheme } from "../../ui/theme";
 import { useFormState } from "react-dom";
 
@@ -44,7 +44,7 @@ export const AuthForm = ({ title, buttonText, actionType }: AuthFormProps) => {
         padding: "24px",
       }}
     >
-      <Heading $size={HeadingSize.Large}>{title}</Heading>
+      <Typography variant="h6">{title}</Typography>
       <form
         action={
           actionType === ActionType.Login ? loginDispatch : signupDispatch
