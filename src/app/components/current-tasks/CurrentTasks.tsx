@@ -1,24 +1,20 @@
 "use client";
-import {
-  Box,
-  Typography,
-  Button,
-  Modal,
-  FormGroup,
-  FormControl,
-  Input,
-  InputLabel,
-} from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
+import { NewTaskForm } from "@/app/ui/new-task-form/NewTaskForm";
 import { customTheme } from "@/app/ui/theme";
 
 export const CurrentTasks = () => {
   const [user, setUser] = useState<null | IUser>(null);
-  const [households, setHouseholds] = useState<null | IHousehold[]>(null);
+  const [household, setHousehold] = useState<null | IHousehold>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
+  const handleTaskModalClose = () => {
+    setIsTaskModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,9 +34,8 @@ export const CurrentTasks = () => {
     const fetchHouseholdData = async () => {
       try {
         if (user) {
-          const household = await getHousehold(user.households);
-          console.log("household", household);
-          setHouseholds(household);
+          const households = await getHousehold(user.households);
+          setHousehold(households[0]);
         }
       } catch (e) {
         console.log(e);
@@ -50,11 +45,9 @@ export const CurrentTasks = () => {
     fetchHouseholdData();
   }, [user]);
 
-  const hasTasks = households?.some(
-    (household) => household.tasks && household.tasks.length > 0
-  );
+  const hasTasks = household?.tasks && household.tasks.length > 0;
 
-  if (!user || !households) {
+  if (!user || !household) {
     // Render loading state while user data is being fetched
     return <div>Loading...</div>;
   }
@@ -71,36 +64,11 @@ export const CurrentTasks = () => {
         borderRadius: "8px",
       }}
     >
-      <Modal
-        open={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        sx={{ top: "30%", padding: "0 120px" }}
-      >
-        <Box>
-          <Typography color="white">Add new task</Typography>
-          <form>
-            <FormGroup>
-              <FormControl>
-                <InputLabel htmlFor="taskName">Task name</InputLabel>
-                <Input id="taskName" type="text" />
-              </FormControl>
-              <FormControl>
-                <InputLabel htmlFor="taskDescription">
-                  Task description
-                </InputLabel>
-                <Input id="taskDescription" type="text" />
-              </FormControl>
-              <FormControl>
-                <InputLabel htmlFor="taskDueDate">Due date</InputLabel>
-                <Input id="taskDueDate" type="date" />
-              </FormControl>
-              <Button variant="contained" type="submit">
-                Add task
-              </Button>
-            </FormGroup>
-          </form>
-        </Box>
-      </Modal>
+      <NewTaskForm
+        handleTaskModalClose={handleTaskModalClose}
+        isTaskModalOpen={isTaskModalOpen}
+        household={household}
+      />
       <Typography variant="h6">Current Tasks</Typography>
       <Box
         sx={{
