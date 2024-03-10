@@ -5,6 +5,7 @@ import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
 import { NewTaskForm } from "@/app/ui/new-task-form/NewTaskForm";
+import { TaskItem } from "@/app/ui/task-item/TaskItem";
 import { customTheme } from "@/app/ui/theme";
 
 export const CurrentTasks = () => {
@@ -79,27 +80,21 @@ export const CurrentTasks = () => {
         }}
       >
         {hasTasks ? (
-          <Box>
-            <p>Your tasks</p>
-            <Button
-              variant="contained"
-              onClick={() => setIsTaskModalOpen(true)}
-            >
-              Add new task
-            </Button>
+          <Box sx={{ width: "100%" }}>
+            {household.tasks &&
+              household.tasks.map((task, index) => (
+                <TaskItem key={index} index={index} task={task} />
+              ))}
           </Box>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <Typography>There are no tasks in you household yet.</Typography>
-            <Button
-              variant="contained"
-              onClick={() => setIsTaskModalOpen(true)}
-            >
-              Add new task
-            </Button>
           </Box>
         )}
       </Box>
+      <Button variant="contained" onClick={() => setIsTaskModalOpen(true)}>
+        Add new task
+      </Button>
     </Box>
   );
 };
