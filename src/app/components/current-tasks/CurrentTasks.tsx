@@ -11,6 +11,7 @@ export const CurrentTasks = () => {
   const [user, setUser] = useState<null | IUser>(null);
   const [household, setHousehold] = useState<null | IHousehold>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  console.log(household);
 
   const handleTaskModalClose = () => {
     setIsTaskModalOpen(false);
@@ -20,7 +21,6 @@ export const CurrentTasks = () => {
     const fetchUserData = async () => {
       try {
         const fetchedUser = await getUser();
-        console.log("fetchedUser", fetchedUser[0]);
         setUser(fetchedUser[0]);
       } catch (e) {
         console.log(e);
@@ -45,7 +45,7 @@ export const CurrentTasks = () => {
     fetchHouseholdData();
   }, [user]);
 
-  const hasTasks = household?.tasks && household.tasks.length > 0;
+  const hasTasks = household?.tasks;
 
   if (!user || !household) {
     // Render loading state while user data is being fetched
@@ -81,6 +81,12 @@ export const CurrentTasks = () => {
         {hasTasks ? (
           <Box>
             <p>Your tasks</p>
+            <Button
+              variant="contained"
+              onClick={() => setIsTaskModalOpen(true)}
+            >
+              Add new task
+            </Button>
           </Box>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>

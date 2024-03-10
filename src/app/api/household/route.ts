@@ -11,7 +11,6 @@ export async function GET(request: Request) {
     }
 
     const response= await sql`SELECT * FROM household WHERE id=${id}`;
-    console.log('household', response);
     return NextResponse.json(response.rows);
   } catch (e) {
     console.log(e);

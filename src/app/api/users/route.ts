@@ -11,7 +11,6 @@ export async function GET(request: Request) {
         }
         
         const response = await sql`SELECT * FROM users WHERE email = ${email}`;
-        console.log('users', response);
         
         return NextResponse.json(response.rows);
     } catch (e) {

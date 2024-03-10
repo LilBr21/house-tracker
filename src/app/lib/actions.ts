@@ -47,12 +47,34 @@ export const getHousehold = async (id: string) => {
   try {
     const response = await fetch(`${process.env.APP_URL}/api/household/?id=${id}`);
     const household = await response.json();
-    console.log('household', household)
     return household;
   } catch (e) {
     console.log(e);
   }
 };
+
+export const addTask = async (prevState: string | undefined, formData: FormData) => {
+  console.log('formData in add', formData)
+  try {
+    const response = await fetch(`${process.env.APP_URL}/api/tasks/?id=${formData.get('id')}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        name: formData.get("name"),
+        notes: formData.get("notes"),
+        assignee: formData.get("assignee"),
+        due_to: formData.get("due_to"),
+      }),
+    });
+    if (response.ok) {
+      const household = await response.json();
+      console.log('household', household)
+      return household;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+}
 
 export const getUser = async () => {
   try {
@@ -61,7 +83,6 @@ export const getUser = async () => {
     const response = await fetch(`${process.env.APP_URL}/api/users/?email=${email}`, {
       method: "GET"
     });
-    console.log('response', response)
     const user = await response.json();
     return user;
   } catch (e) {
@@ -72,7 +93,6 @@ export const getUser = async () => {
 export const isSignedIn = async () => {
   const session = await auth();
   if (session?.user) {
-    console.log(session);
     return true;
   } else {
     return false;

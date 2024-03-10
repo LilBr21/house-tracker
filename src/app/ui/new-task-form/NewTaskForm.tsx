@@ -14,7 +14,9 @@ import {
   FormHelperText,
   SelectChangeEvent,
 } from "@mui/material";
+import { useFormState } from "react-dom";
 import { IHousehold } from "@/app/interfaces/households";
+import { addTask } from "@/app/lib/actions";
 import { customTheme } from "../../ui/theme";
 
 interface IProps {
@@ -28,11 +30,21 @@ export const NewTaskForm = ({
   isTaskModalOpen,
   household,
 }: IProps) => {
-  const [taskAsignee, setTaskAsignee] = useState("");
+  const [errorMessage, dispatch] = useFormState<any, FormData>(
+    addTask,
+    undefined
+  );
+  const [taskAssignee, setTaskAssignee] = useState("");
+  const [taskHousehold, setTaskHousehold] = useState(
+    household.name ?? household.id
+  );
 
-  const handleSelectChange = (event: SelectChangeEvent) => {
-    console.log("event.target.value", event.target.value);
-    setTaskAsignee(event.target.value as string);
+  const handleSelectAsigneeChange = (event: SelectChangeEvent) => {
+    setTaskAssignee(event.target.value as string);
+  };
+
+  const handleSelectHouseholdChange = (event: SelectChangeEvent) => {
+    setTaskHousehold(event.target.value as string);
   };
 
   return (
@@ -58,7 +70,7 @@ export const NewTaskForm = ({
         >
           Add new task
         </Typography>
-        <form>
+        <form action={dispatch}>
           <FormGroup
             sx={{
               display: "flex",
@@ -77,7 +89,7 @@ export const NewTaskForm = ({
               >
                 Task name
               </InputLabel>
-              <Input id="taskName" type="text" />
+              <Input id="taskName" type="text" name="name" />
             </FormControl>
             <FormControl>
               <FormHelperText
@@ -90,6 +102,7 @@ export const NewTaskForm = ({
                 id="taskDueDate"
                 placeholder="Due to"
                 type="date"
+                name="due_to"
               />
             </FormControl>
             <FormControl>
@@ -102,9 +115,10 @@ export const NewTaskForm = ({
               <Select
                 id="taskAssignee"
                 variant="standard"
-                onChange={handleSelectChange}
-                value={taskAsignee ?? ""}
+                onChange={handleSelectAsigneeChange}
+                value={taskAssignee ?? ""}
                 sx={{ color: "white", padding: "0 12px" }}
+                name="assignee"
               >
                 {household.members.map((member) => (
                   <option key={member} value={member}>
@@ -113,12 +127,33 @@ export const NewTaskForm = ({
                 ))}
               </Select>
             </FormControl>
+            <FormControl>
+              <InputLabel
+                htmlFor="id"
+                sx={{ color: `${customTheme.colors.textPrimary}` }}
+              >
+                Household
+              </InputLabel>
+              <Select
+                id="householdId"
+                variant="standard"
+                onChange={handleSelectHouseholdChange}
+                value={taskHousehold ?? ""}
+                sx={{ color: "white", padding: "0 12px" }}
+                name="id"
+              >
+                <option key={household.id} value={household.id}>
+                  {household.name ?? household.id}
+                </option>
+              </Select>
+            </FormControl>
             <FormControl sx={{ color: `${customTheme.colors.textPrimary}` }}>
               <TextField
                 placeholder="Notes"
                 multiline
                 minRows={3}
                 inputProps={{ style: { color: "white" } }}
+                name="notes"
               />
             </FormControl>
             <Button variant="contained" type="submit">
