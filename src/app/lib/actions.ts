@@ -54,7 +54,7 @@ export const getHousehold = async (id: string) => {
 };
 
 export const addTask = async (prevState: string | undefined, formData: FormData) => {
-  console.log('formData in add', formData)
+  console.log('formData in add', formData);
   try {
     const response = await fetch(`${process.env.APP_URL}/api/tasks/?id=${formData.get('id')}`, {
       method: "PUT",
@@ -64,26 +64,31 @@ export const addTask = async (prevState: string | undefined, formData: FormData)
         assignee: formData.get("assignee"),
         due_to: formData.get("due_to"),
       }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     if (response.ok) {
       const household = await response.json();
-      console.log('household', household)
+      console.log('household', household);
       return household;
     }
   } catch (e) {
     console.log(e);
   }
+};
 
-}
 
 export const getUser = async () => {
   try {
     const session = await auth();
+    console.log('session', session)
     const email = session?.user?.email;
     const response = await fetch(`${process.env.APP_URL}/api/users/?email=${email}`, {
-      method: "GET"
+      method: "GET",
     });
     const user = await response.json();
+    console.log('user', user)
     return user;
   } catch (e) {
     console.log(e);
