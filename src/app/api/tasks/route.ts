@@ -6,20 +6,22 @@ interface ITask {
     notes: string;
     assignee: string;
     due_to: Date;
+    done: boolean;
 }
 
 export async function PUT(request: Request) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
-    const { name, notes, assignee, due_to } = await request.json();
+    const { name, notes, assignee, due_to, done } = await request.json();
 
     // Construct the new task object
     const newTask: ITask = {
       name: name,
       notes: notes,
       assignee: assignee,
-      due_to: due_to
+      due_to: due_to,
+      done: done
     };
 
     // Fetch the existing household data

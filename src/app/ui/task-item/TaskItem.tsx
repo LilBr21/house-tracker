@@ -12,11 +12,12 @@ interface IProps {
 export const TaskItem = ({ task, index }: IProps) => {
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
 
+  const taskNum = index + 1;
   return (
     <Box
       sx={{
-        display: "flex",
-        gap: "24px",
+        display: "gird",
+        gridAutoColumns: "1fr",
         width: "100%",
         borderTopStyle: "solid", // Separate border properties
         borderTopWidth: "1px",
@@ -27,8 +28,8 @@ export const TaskItem = ({ task, index }: IProps) => {
         padding: "12px 0",
       }}
     >
-      <Typography>
-        {index.toString()}. {task.name}
+      <Typography variant="h6">
+        {taskNum.toString()}. {task.name}
       </Typography>
       <Typography>assignee: {task.assignee}</Typography>
       <Typography>due to: {formattedDate} </Typography>

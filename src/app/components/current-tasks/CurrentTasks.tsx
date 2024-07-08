@@ -49,7 +49,6 @@ export const CurrentTasks = () => {
   const hasTasks = household?.tasks;
 
   if (!user || !household) {
-    // Render loading state while user data is being fetched
     return <div>Loading...</div>;
   }
 
@@ -58,11 +57,12 @@ export const CurrentTasks = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
         backgroundColor: `${customTheme.colors.backgroundSecondary}`,
         padding: "12px 20px",
         margin: "64px 240px",
         borderRadius: "8px",
+        height: "calc(100vh - 240px)",
+        overflow: "auto",
       }}
     >
       <NewTaskForm
