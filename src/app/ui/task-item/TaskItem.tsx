@@ -1,6 +1,7 @@
 "use client";
+import { useState } from "react";
 import { format } from "date-fns";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography, Checkbox } from "@mui/material";
 import { customTheme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
 
@@ -10,14 +11,19 @@ interface IProps {
 }
 
 export const TaskItem = ({ task, index }: IProps) => {
+  const [isDone, setIsDone] = useState(task.done ?? false);
+
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
+
+  const handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsDone(event.target.checked);
+  };
 
   const taskNum = index + 1;
   return (
-    <Box
+    <Grid
+      container
       sx={{
-        display: "gird",
-        gridAutoColumns: "1fr",
         width: "100%",
         borderTopStyle: "solid", // Separate border properties
         borderTopWidth: "1px",
@@ -28,12 +34,29 @@ export const TaskItem = ({ task, index }: IProps) => {
         padding: "12px 0",
       }}
     >
-      <Typography variant="h6">
-        {taskNum.toString()}. {task.name}
-      </Typography>
-      <Typography>assignee: {task.assignee}</Typography>
-      <Typography>due to: {formattedDate} </Typography>
-      {task.notes && <Typography>notes: {task.notes}</Typography>}
-    </Box>
+      <Grid item xs={10}>
+        <Typography
+          variant={"h6"}
+          sx={{ textDecoration: isDone ? "line-through" : "" }}
+        >
+          {taskNum.toString()}. {task.name}
+        </Typography>
+        <Typography>assignee: {task.assignee}</Typography>
+        <Typography>due to: {formattedDate} </Typography>
+        {task.notes && <Typography>notes: {task.notes}</Typography>}
+      </Grid>
+      <Grid item xs={2}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography>Done:</Typography>
+          <Checkbox checked={isDone} onChange={handleDoneChange} />
+        </Box>
+      </Grid>
+    </Grid>
   );
 };

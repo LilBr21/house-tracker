@@ -4,4 +4,5 @@ export interface ITask {
     due_to: Date;
     name: string;
     notes?: string;
+    done?: boolean;
 };
