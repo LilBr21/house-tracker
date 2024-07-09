@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
-import { NewTaskForm } from "@/app/ui/new-task-form/NewTaskForm";
+import { NewTaskForm } from "@/app/ui/modals/NewTaskForm";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
 import { customTheme } from "@/app/ui/theme";
 
@@ -14,8 +14,22 @@ export const CurrentTasks = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   console.log(household);
 
-  const handleTaskModalClose = () => {
+  const fetchHouseholdData = async () => {
+    try {
+      if (user) {
+        const households = await getHousehold(user.households);
+        setHousehold(households[0]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleTaskModalClose = (isSubmitted?: boolean) => {
     setIsTaskModalOpen(false);
+    if (isSubmitted) {
+      fetchHouseholdData();
+    }
   };
 
   useEffect(() => {
@@ -32,17 +46,6 @@ export const CurrentTasks = () => {
   }, []);
 
   useEffect(() => {
-    const fetchHouseholdData = async () => {
-      try {
-        if (user) {
-          const households = await getHousehold(user.households);
-          setHousehold(households[0]);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
     fetchHouseholdData();
   }, [user]);
 
@@ -61,8 +64,7 @@ export const CurrentTasks = () => {
         padding: "12px 20px",
         margin: "64px 240px",
         borderRadius: "8px",
-        height: "calc(100vh - 240px)",
-        overflow: "auto",
+        height: "calc(100vh - 260px)",
       }}
     >
       <NewTaskForm
@@ -70,7 +72,9 @@ export const CurrentTasks = () => {
         isTaskModalOpen={isTaskModalOpen}
         household={household}
       />
-      <Typography variant="h6">Current Tasks</Typography>
+      <Typography variant="h6" textAlign="center">
+        Current Tasks
+      </Typography>
       <Box
         sx={{
           height: "100%",
@@ -80,10 +84,22 @@ export const CurrentTasks = () => {
         }}
       >
         {hasTasks ? (
-          <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "90%",
+              overflow: "auto",
+            }}
+          >
             {household.tasks &&
               household.tasks.map((task, index) => (
-                <TaskItem key={index} index={index} task={task} />
+                <TaskItem
+                  key={index}
+                  index={index}
+                  task={task}
+                  householdId={household.id}
+                  fetchHouseholdData={fetchHouseholdData}
+                />
               ))}
           </Box>
         ) : (
