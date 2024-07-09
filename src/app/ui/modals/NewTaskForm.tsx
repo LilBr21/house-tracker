@@ -17,7 +17,7 @@ import {
 import { useFormState } from "react-dom";
 import { IHousehold } from "@/app/interfaces/households";
 import { addTask } from "@/app/lib/actions";
-import { customTheme } from "../../ui/theme";
+import { customTheme } from "../theme";
 
 interface IProps {
   handleTaskModalClose: () => void;
@@ -51,7 +51,7 @@ export const NewTaskForm = ({
     <Modal
       open={isTaskModalOpen}
       onClose={handleTaskModalClose}
-      sx={{ top: "30%", padding: "0 120px" }}
+      sx={{ top: "20%", padding: "0 120px" }}
     >
       <Box
         sx={{

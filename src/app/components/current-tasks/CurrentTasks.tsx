@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
-import { NewTaskForm } from "@/app/ui/new-task-form/NewTaskForm";
+import { NewTaskForm } from "@/app/ui/modals/NewTaskForm";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
 import { customTheme } from "@/app/ui/theme";
 

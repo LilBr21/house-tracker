@@ -5,7 +5,7 @@ import { Box, Grid, Typography, Checkbox, IconButton } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { customTheme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
-import { deleteTask } from "@/app/lib/actions";
+import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
 
 interface IProps {
   task: ITask;
@@ -15,6 +15,7 @@ interface IProps {
 
 export const TaskItem = ({ task, index, householdId }: IProps) => {
   const [isDone, setIsDone] = useState(task.done ?? false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
 
@@ -22,12 +23,8 @@ export const TaskItem = ({ task, index, householdId }: IProps) => {
     setIsDone(event.target.checked);
   };
 
-  const handleDeleteTask = async () => {
-    try {
-      await deleteTask(householdId, task.id);
-    } catch (e) {
-      console.log("error", e);
-    }
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
   };
 
   const taskNum = index + 1;
@@ -45,6 +42,12 @@ export const TaskItem = ({ task, index, householdId }: IProps) => {
         padding: "12px",
       }}
     >
+      <DeleteTaskModal
+        taskId={task.id}
+        householdId={householdId}
+        isDeleteModalOpen={isDeleteModalOpen}
+        handleDeleteModalClose={handleDeleteModalClose}
+      />
       <Grid item xs={10}>
         <Typography
           variant={"h6"}
@@ -69,7 +72,7 @@ export const TaskItem = ({ task, index, householdId }: IProps) => {
             <IconButton
               sx={{ paddingRight: "8px" }}
               color="primary"
-              onClick={handleDeleteTask}
+              onClick={() => setIsDeleteModalOpen(true)}
             >
               <DeleteOutlinedIcon />
             </IconButton>
