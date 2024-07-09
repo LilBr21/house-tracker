@@ -60,7 +60,7 @@ export const CurrentTasks = () => {
         display: "flex",
         flexDirection: "column",
         padding: "12px 20px",
-        margin: "64px 64px",
+        margin: "40px 64px",
         borderRadius: "8px",
         height: "calc(100vh - 260px)",
       }}
@@ -70,7 +70,7 @@ export const CurrentTasks = () => {
         isTaskModalOpen={isTaskModalOpen}
         household={household}
       />
-      <Typography variant="h6" textAlign="center">
+      <Typography variant="h5" textAlign="center">
         Current Tasks
       </Typography>
       <Box
@@ -80,12 +80,13 @@ export const CurrentTasks = () => {
           alignItems: "center",
           justifyContent: "center",
           overflow: "auto",
+          marginBottom: "16px",
         }}
       >
         {hasTasks ? (
           <Grid
             container
-            columnGap={12}
+            columnGap={8}
             rowGap={8}
             sx={{
               width: "100%",

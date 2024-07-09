@@ -35,13 +35,15 @@ export const TaskItem = ({
 
   const taskNum = index + 1;
   return (
-    <Grid
-      container
+    <Box
       sx={{
         width: "400px",
         padding: "12px",
         backgroundColor: `${customTheme.colors.backgroundInverted}`,
         borderRadius: "8px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <DeleteTaskModal
@@ -51,7 +53,7 @@ export const TaskItem = ({
         handleDeleteModalClose={handleDeleteModalClose}
         fetchHouseholdData={fetchHouseholdData}
       />
-      <Grid item xs={10}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         <Typography
           color={theme.palette.primary.dark}
           variant={"h6"}
@@ -70,38 +72,38 @@ export const TaskItem = ({
             notes: {task.notes}
           </Typography>
         )}
-      </Grid>
-      <Grid item xs={2}>
-        <Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-            }}
-          >
-            <IconButton
-              sx={{ paddingRight: "8px" }}
-              color="secondary"
-              onClick={() => setIsDeleteModalOpen(true)}
-            >
-              <DeleteOutlinedIcon />
-            </IconButton>
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <Typography color={theme.palette.primary.dark}>Done:</Typography>
-            <Checkbox checked={isDone} onChange={handleDoneChange} />
-          </Box>
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Typography color={theme.palette.primary.dark}>Done:</Typography>
+          <Checkbox
+            checked={isDone}
+            color="success"
+            onChange={handleDoneChange}
+          />
         </Box>
-      </Grid>
-    </Grid>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <IconButton
+            sx={{ paddingRight: "8px" }}
+            color="secondary"
+            onClick={() => setIsDeleteModalOpen(true)}
+          >
+            <DeleteOutlinedIcon />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
