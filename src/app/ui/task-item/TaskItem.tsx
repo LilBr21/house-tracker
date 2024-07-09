@@ -1,22 +1,33 @@
 "use client";
 import { useState } from "react";
 import { format } from "date-fns";
-import { Box, Grid, Typography, Checkbox } from "@mui/material";
+import { Box, Grid, Typography, Checkbox, IconButton } from "@mui/material";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { customTheme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
+import { deleteTask } from "@/app/lib/actions";
 
 interface IProps {
   task: ITask;
   index: number;
+  householdId: string;
 }
 
-export const TaskItem = ({ task, index }: IProps) => {
+export const TaskItem = ({ task, index, householdId }: IProps) => {
   const [isDone, setIsDone] = useState(task.done ?? false);
 
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
 
   const handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsDone(event.target.checked);
+  };
+
+  const handleDeleteTask = async () => {
+    try {
+      await deleteTask(householdId, task.id);
+    } catch (e) {
+      console.log("error", e);
+    }
   };
 
   const taskNum = index + 1;
@@ -31,7 +42,7 @@ export const TaskItem = ({ task, index }: IProps) => {
         borderBottomStyle: "solid", // Separate border properties
         borderBottompWidth: "1px",
         borderBottomColor: `${customTheme.colors.textSecondary}`,
-        padding: "12px 0",
+        padding: "12px",
       }}
     >
       <Grid item xs={10}>
@@ -46,15 +57,34 @@ export const TaskItem = ({ task, index }: IProps) => {
         {task.notes && <Typography>notes: {task.notes}</Typography>}
       </Grid>
       <Grid item xs={2}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography>Done:</Typography>
-          <Checkbox checked={isDone} onChange={handleDoneChange} />
+        <Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+            }}
+          >
+            <IconButton
+              sx={{ paddingRight: "8px" }}
+              color="primary"
+              onClick={handleDeleteTask}
+            >
+              <DeleteOutlinedIcon />
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <Typography>Done:</Typography>
+            <Checkbox checked={isDone} onChange={handleDoneChange} />
+          </Box>
         </Box>
       </Grid>
     </Grid>

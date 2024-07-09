@@ -61,8 +61,7 @@ export const CurrentTasks = () => {
         padding: "12px 20px",
         margin: "64px 240px",
         borderRadius: "8px",
-        height: "calc(100vh - 240px)",
-        overflow: "auto",
+        height: "calc(100vh - 260px)",
       }}
     >
       <NewTaskForm
@@ -70,7 +69,9 @@ export const CurrentTasks = () => {
         isTaskModalOpen={isTaskModalOpen}
         household={household}
       />
-      <Typography variant="h6">Current Tasks</Typography>
+      <Typography variant="h6" textAlign="center">
+        Current Tasks
+      </Typography>
       <Box
         sx={{
           height: "100%",
@@ -80,10 +81,21 @@ export const CurrentTasks = () => {
         }}
       >
         {hasTasks ? (
-          <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "90%",
+              overflow: "auto",
+            }}
+          >
             {household.tasks &&
               household.tasks.map((task, index) => (
-                <TaskItem key={index} index={index} task={task} />
+                <TaskItem
+                  key={index}
+                  index={index}
+                  task={task}
+                  householdId={household.id}
+                />
               ))}
           </Box>
         ) : (
