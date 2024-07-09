@@ -11,9 +11,15 @@ interface IProps {
   task: ITask;
   index: number;
   householdId: string;
+  fetchHouseholdData: () => Promise<void>;
 }
 
-export const TaskItem = ({ task, index, householdId }: IProps) => {
+export const TaskItem = ({
+  task,
+  index,
+  householdId,
+  fetchHouseholdData,
+}: IProps) => {
   const [isDone, setIsDone] = useState(task.done ?? false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -47,6 +53,7 @@ export const TaskItem = ({ task, index, householdId }: IProps) => {
         householdId={householdId}
         isDeleteModalOpen={isDeleteModalOpen}
         handleDeleteModalClose={handleDeleteModalClose}
+        fetchHouseholdData={fetchHouseholdData}
       />
       <Grid item xs={10}>
         <Typography

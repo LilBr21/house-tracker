@@ -20,7 +20,7 @@ import { addTask } from "@/app/lib/actions";
 import { customTheme } from "../theme";
 
 interface IProps {
-  handleTaskModalClose: () => void;
+  handleTaskModalClose: (isSubmitted?: boolean) => void;
   isTaskModalOpen: boolean;
   household: IHousehold;
 }
@@ -47,10 +47,21 @@ export const NewTaskForm = ({
     setTaskHousehold(event.target.value as string);
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    try {
+      await dispatch(formData);
+      handleTaskModalClose(true);
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
+  };
+
   return (
     <Modal
       open={isTaskModalOpen}
-      onClose={handleTaskModalClose}
+      onClose={() => handleTaskModalClose()}
       sx={{ top: "20%", padding: "0 120px" }}
     >
       <Box
@@ -70,7 +81,7 @@ export const NewTaskForm = ({
         >
           Add new task
         </Typography>
-        <form action={dispatch}>
+        <form onSubmit={handleSubmit}>
           <FormGroup
             sx={{
               display: "flex",

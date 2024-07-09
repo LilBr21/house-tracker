@@ -14,8 +14,22 @@ export const CurrentTasks = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   console.log(household);
 
-  const handleTaskModalClose = () => {
+  const fetchHouseholdData = async () => {
+    try {
+      if (user) {
+        const households = await getHousehold(user.households);
+        setHousehold(households[0]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleTaskModalClose = (isSubmitted?: boolean) => {
     setIsTaskModalOpen(false);
+    if (isSubmitted) {
+      fetchHouseholdData();
+    }
   };
 
   useEffect(() => {
@@ -32,17 +46,6 @@ export const CurrentTasks = () => {
   }, []);
 
   useEffect(() => {
-    const fetchHouseholdData = async () => {
-      try {
-        if (user) {
-          const households = await getHousehold(user.households);
-          setHousehold(households[0]);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
     fetchHouseholdData();
   }, [user]);
 
@@ -95,6 +98,7 @@ export const CurrentTasks = () => {
                   index={index}
                   task={task}
                   householdId={household.id}
+                  fetchHouseholdData={fetchHouseholdData}
                 />
               ))}
           </Box>

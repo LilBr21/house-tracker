@@ -8,6 +8,7 @@ interface IProps {
   householdId: string;
   isDeleteModalOpen: boolean;
   handleDeleteModalClose: () => void;
+  fetchHouseholdData: () => Promise<void>;
 }
 
 export const DeleteTaskModal = ({
@@ -15,10 +16,12 @@ export const DeleteTaskModal = ({
   householdId,
   isDeleteModalOpen,
   handleDeleteModalClose,
+  fetchHouseholdData,
 }: IProps) => {
   const handleDeleteTask = async () => {
     try {
       await deleteTask(householdId, taskId);
+      await fetchHouseholdData();
       handleDeleteModalClose();
     } catch (e) {
       console.log("error", e);
