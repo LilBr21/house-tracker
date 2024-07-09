@@ -3,7 +3,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { Box, Grid, Typography, Checkbox, IconButton } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { customTheme } from "../theme";
+import { customTheme, theme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
 import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
 
@@ -38,14 +38,10 @@ export const TaskItem = ({
     <Grid
       container
       sx={{
-        width: "100%",
-        borderTopStyle: "solid", // Separate border properties
-        borderTopWidth: "1px",
-        borderTopColor: `${customTheme.colors.textSecondary}`,
-        borderBottomStyle: "solid", // Separate border properties
-        borderBottompWidth: "1px",
-        borderBottomColor: `${customTheme.colors.textSecondary}`,
+        width: "400px",
         padding: "12px",
+        backgroundColor: `${customTheme.colors.backgroundInverted}`,
+        borderRadius: "8px",
       }}
     >
       <DeleteTaskModal
@@ -57,14 +53,23 @@ export const TaskItem = ({
       />
       <Grid item xs={10}>
         <Typography
+          color={theme.palette.primary.dark}
           variant={"h6"}
           sx={{ textDecoration: isDone ? "line-through" : "" }}
         >
           {taskNum.toString()}. {task.name}
         </Typography>
-        <Typography>assignee: {task.assignee}</Typography>
-        <Typography>due to: {formattedDate} </Typography>
-        {task.notes && <Typography>notes: {task.notes}</Typography>}
+        <Typography color={theme.palette.primary.dark}>
+          assignee: {task.assignee}
+        </Typography>
+        <Typography color={theme.palette.primary.dark}>
+          due to: {formattedDate}{" "}
+        </Typography>
+        {task.notes && (
+          <Typography color={theme.palette.primary.dark}>
+            notes: {task.notes}
+          </Typography>
+        )}
       </Grid>
       <Grid item xs={2}>
         <Box>
@@ -78,7 +83,7 @@ export const TaskItem = ({
           >
             <IconButton
               sx={{ paddingRight: "8px" }}
-              color="primary"
+              color="secondary"
               onClick={() => setIsDeleteModalOpen(true)}
             >
               <DeleteOutlinedIcon />
@@ -92,7 +97,7 @@ export const TaskItem = ({
               alignItems: "center",
             }}
           >
-            <Typography>Done:</Typography>
+            <Typography color={theme.palette.primary.dark}>Done:</Typography>
             <Checkbox checked={isDone} onChange={handleDoneChange} />
           </Box>
         </Box>
