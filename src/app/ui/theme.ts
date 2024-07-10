@@ -7,6 +7,7 @@ export const customTheme = {
         textPrimary: '#ffffff',
         accentPrimary: '#F8F32B',
         textSecondary: '#8D99AE',
+        backgroundInverted: '#ffffff',
         backgroundSecondary: '#2B2D42'
     },
     fontSizes: {
@@ -25,6 +26,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#ffffff',
+      dark: '#000000',
       // light: will be calculated from palette.primary.main,
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main

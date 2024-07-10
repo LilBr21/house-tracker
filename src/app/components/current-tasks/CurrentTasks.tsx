@@ -1,12 +1,11 @@
 "use client";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
 import { NewTaskForm } from "@/app/ui/modals/NewTaskForm";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
-import { customTheme } from "@/app/ui/theme";
 
 export const CurrentTasks = () => {
   const [user, setUser] = useState<null | IUser>(null);
@@ -59,12 +58,13 @@ export const CurrentTasks = () => {
     <Box
       sx={{
         display: "flex",
+        position: "relative",
         flexDirection: "column",
-        backgroundColor: `${customTheme.colors.backgroundSecondary}`,
         padding: "12px 20px",
-        margin: "64px 240px",
+        margin: "40px 64px",
         borderRadius: "8px",
         height: "calc(100vh - 260px)",
+        zIndex: "1",
       }}
     >
       <NewTaskForm
@@ -72,7 +72,7 @@ export const CurrentTasks = () => {
         isTaskModalOpen={isTaskModalOpen}
         household={household}
       />
-      <Typography variant="h6" textAlign="center">
+      <Typography variant="h5" textAlign="center">
         Current Tasks
       </Typography>
       <Box
@@ -81,14 +81,18 @@ export const CurrentTasks = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          overflow: "auto",
+          marginBottom: "16px",
         }}
       >
         {hasTasks ? (
-          <Box
+          <Grid
+            container
+            columnGap={8}
+            rowGap={8}
             sx={{
               width: "100%",
               height: "90%",
-              overflow: "auto",
             }}
           >
             {household.tasks &&
@@ -101,14 +105,18 @@ export const CurrentTasks = () => {
                   fetchHouseholdData={fetchHouseholdData}
                 />
               ))}
-          </Box>
+          </Grid>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <Typography>There are no tasks in you household yet.</Typography>
           </Box>
         )}
       </Box>
-      <Button variant="contained" onClick={() => setIsTaskModalOpen(true)}>
+      <Button
+        variant="outlined"
+        sx={{ width: "40%" }}
+        onClick={() => setIsTaskModalOpen(true)}
+      >
         Add new task
       </Button>
     </Box>
