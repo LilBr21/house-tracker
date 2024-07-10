@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
-import { NewTaskForm } from "@/app/ui/modals/NewTaskForm";
+import { TaskFormModal } from "@/app/ui/modals/TaskFormModal";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
 
 export const CurrentTasks = () => {
@@ -67,7 +67,7 @@ export const CurrentTasks = () => {
         zIndex: "1",
       }}
     >
-      <NewTaskForm
+      <TaskFormModal
         handleTaskModalClose={handleTaskModalClose}
         isTaskModalOpen={isTaskModalOpen}
         household={household}
@@ -89,7 +89,7 @@ export const CurrentTasks = () => {
           <Grid
             container
             columnGap={8}
-            rowGap={8}
+            rowGap={4}
             sx={{
               width: "100%",
               height: "90%",
@@ -103,7 +103,7 @@ export const CurrentTasks = () => {
                     key={index}
                     index={index}
                     task={task}
-                    householdId={household.id}
+                    household={household}
                     fetchHouseholdData={fetchHouseholdData}
                   />
                 ))}

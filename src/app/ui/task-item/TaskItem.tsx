@@ -3,26 +3,30 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { Box, Typography, Checkbox, IconButton } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { customTheme, theme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
+import { IHousehold } from "@/app/interfaces/households";
 import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
+import { TaskFormModal } from "../modals/TaskFormModal";
 import { updateTask } from "@/app/lib/actions";
 
 interface IProps {
   task: ITask;
   index: number;
-  householdId: string;
+  household: IHousehold;
   fetchHouseholdData: () => Promise<void>;
 }
 
 export const TaskItem = ({
   task,
   index,
-  householdId,
+  household,
   fetchHouseholdData,
 }: IProps) => {
   const [isDone, setIsDone] = useState(task.done ?? false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
 
@@ -31,7 +35,7 @@ export const TaskItem = ({
   ) => {
     setIsDone(event.target.checked);
     try {
-      await updateTask(householdId, task.id, { done: event.target.checked });
+      await updateTask(household.id, task.id, { done: event.target.checked });
     } catch (e) {
       console.log(e);
     }
@@ -39,6 +43,13 @@ export const TaskItem = ({
 
   const handleDeleteModalClose = () => {
     setIsDeleteModalOpen(false);
+  };
+
+  const handleTaskModalClose = (isSubmitted?: boolean) => {
+    if (isSubmitted) {
+      fetchHouseholdData();
+    }
+    setIsTaskModalOpen(false);
   };
 
   const taskNum = index + 1;
@@ -57,10 +68,17 @@ export const TaskItem = ({
     >
       <DeleteTaskModal
         taskId={task.id}
-        householdId={householdId}
+        householdId={household.id}
         isDeleteModalOpen={isDeleteModalOpen}
         handleDeleteModalClose={handleDeleteModalClose}
         fetchHouseholdData={fetchHouseholdData}
+      />
+      <TaskFormModal
+        handleTaskModalClose={handleTaskModalClose}
+        isTaskModalOpen={isTaskModalOpen}
+        household={household}
+        isEditing={true}
+        task={task}
       />
       <Box sx={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         <Typography
@@ -104,6 +122,13 @@ export const TaskItem = ({
             justifyContent: "flex-end",
           }}
         >
+          <IconButton
+            sx={{ paddingRight: "8px" }}
+            color="secondary"
+            onClick={() => setIsTaskModalOpen(true)}
+          >
+            <EditOutlinedIcon />
+          </IconButton>
           <IconButton
             sx={{ paddingRight: "8px" }}
             color="secondary"

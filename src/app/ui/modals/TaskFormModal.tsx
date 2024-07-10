@@ -16,25 +16,30 @@ import {
 } from "@mui/material";
 import { useFormState } from "react-dom";
 import { IHousehold } from "@/app/interfaces/households";
-import { addTask } from "@/app/lib/actions";
+import { ITask } from "@/app/interfaces/task";
+import { addTask, updateTask } from "@/app/lib/actions";
 import { customTheme } from "../theme";
 
 interface IProps {
   handleTaskModalClose: (isSubmitted?: boolean) => void;
   isTaskModalOpen: boolean;
   household: IHousehold;
+  isEditing?: boolean;
+  task?: ITask;
 }
 
-export const NewTaskForm = ({
+export const TaskFormModal = ({
   handleTaskModalClose,
   isTaskModalOpen,
   household,
+  isEditing = false,
+  task,
 }: IProps) => {
   const [errorMessage, dispatch] = useFormState<any, FormData>(
     addTask,
     undefined
   );
-  const [taskAssignee, setTaskAssignee] = useState("");
+  const [taskAssignee, setTaskAssignee] = useState(task?.assignee ?? "");
   const [taskHousehold, setTaskHousehold] = useState(
     household.name ?? household.id
   );
@@ -51,6 +56,16 @@ export const NewTaskForm = ({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     try {
+      if (isEditing && task?.id) {
+        await updateTask(household.id, task.id, {
+          name: formData.get("name"),
+          notes: formData.get("notes"),
+          assignee: formData.get("assignee"),
+          due_to: formData.get("due_to"),
+        });
+        handleTaskModalClose(true);
+        return;
+      }
       await dispatch(formData);
       handleTaskModalClose(true);
     } catch (error) {
@@ -79,7 +94,7 @@ export const NewTaskForm = ({
           variant="h6"
           sx={{ marginBottom: "24px", textAlign: "center" }}
         >
-          Add new task
+          {isEditing ? "Edit task" : "Add new task"}
         </Typography>
         <form onSubmit={handleSubmit}>
           <FormGroup
@@ -100,7 +115,12 @@ export const NewTaskForm = ({
               >
                 Task name
               </InputLabel>
-              <Input id="taskName" type="text" name="name" />
+              <Input
+                id="taskName"
+                type="text"
+                name="name"
+                defaultValue={task?.name ?? ""}
+              />
             </FormControl>
             <FormControl>
               <FormHelperText
@@ -114,6 +134,7 @@ export const NewTaskForm = ({
                 placeholder="Due to"
                 type="date"
                 name="due_to"
+                defaultValue={task?.due_to ?? Date.now()}
               />
             </FormControl>
             <FormControl>
@@ -165,10 +186,11 @@ export const NewTaskForm = ({
                 minRows={3}
                 inputProps={{ style: { color: "white" } }}
                 name="notes"
+                defaultValue={task?.notes ?? ""}
               />
             </FormControl>
             <Button variant="contained" type="submit">
-              Add task
+              {isEditing ? "Save" : "Add task"}
             </Button>
           </FormGroup>
         </form>
