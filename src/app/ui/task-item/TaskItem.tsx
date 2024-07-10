@@ -44,6 +44,7 @@ export const TaskItem = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        opacity: isDone ? 0.5 : 0.9,
       }}
     >
       <DeleteTaskModal

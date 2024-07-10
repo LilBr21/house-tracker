@@ -58,11 +58,13 @@ export const CurrentTasks = () => {
     <Box
       sx={{
         display: "flex",
+        position: "relative",
         flexDirection: "column",
         padding: "12px 20px",
         margin: "40px 64px",
         borderRadius: "8px",
         height: "calc(100vh - 260px)",
+        zIndex: "1",
       }}
     >
       <NewTaskForm
@@ -110,7 +112,11 @@ export const CurrentTasks = () => {
           </Box>
         )}
       </Box>
-      <Button variant="contained" onClick={() => setIsTaskModalOpen(true)}>
+      <Button
+        variant="outlined"
+        sx={{ width: "40%" }}
+        onClick={() => setIsTaskModalOpen(true)}
+      >
         Add new task
       </Button>
     </Box>
