@@ -96,15 +96,17 @@ export const CurrentTasks = () => {
             }}
           >
             {household.tasks &&
-              household.tasks.map((task, index) => (
-                <TaskItem
-                  key={index}
-                  index={index}
-                  task={task}
-                  householdId={household.id}
-                  fetchHouseholdData={fetchHouseholdData}
-                />
-              ))}
+              household.tasks
+                .filter((task) => task.done !== true)
+                .map((task, index) => (
+                  <TaskItem
+                    key={index}
+                    index={index}
+                    task={task}
+                    householdId={household.id}
+                    fetchHouseholdData={fetchHouseholdData}
+                  />
+                ))}
           </Grid>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>

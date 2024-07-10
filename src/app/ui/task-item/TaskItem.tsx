@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import { format } from "date-fns";
-import { Box, Grid, Typography, Checkbox, IconButton } from "@mui/material";
+import { Box, Typography, Checkbox, IconButton } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { customTheme, theme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
 import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
+import { updateTask } from "@/app/lib/actions";
 
 interface IProps {
   task: ITask;
@@ -25,8 +26,15 @@ export const TaskItem = ({
 
   const formattedDate = format(new Date(task.due_to), "dd/MM/yyyy");
 
-  const handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDoneChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setIsDone(event.target.checked);
+    try {
+      await updateTask(householdId, task.id, { done: event.target.checked });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleDeleteModalClose = () => {
