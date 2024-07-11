@@ -1,23 +1,27 @@
 "use client";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
 import { TaskFormModal } from "@/app/ui/modals/TaskFormModal";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
+import { useGetUser } from "@/app/hooks/useGetUser";
+import { useGetHousehold } from "@/app/hooks/useGetHousehold";
 
 export const CurrentTasks = () => {
   const [user, setUser] = useState<null | IUser>(null);
   const [household, setHousehold] = useState<null | IHousehold>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
+  const { fetchUserData } = useGetUser();
+  const { fetchHouseholdData } = useGetHousehold();
   console.log(household);
 
-  const fetchHouseholdData = async () => {
+  const getHouseHold = async () => {
     try {
       if (user) {
-        const households = await getHousehold(user.households);
-        setHousehold(households[0]);
+        const data = await fetchHouseholdData(user);
+        setHousehold(data);
       }
     } catch (e) {
       console.log(e);
@@ -27,25 +31,25 @@ export const CurrentTasks = () => {
   const handleTaskModalClose = (isSubmitted?: boolean) => {
     setIsTaskModalOpen(false);
     if (isSubmitted) {
-      fetchHouseholdData();
+      getHouseHold();
     }
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const getUser = async () => {
       try {
-        const fetchedUser = await getUser();
-        setUser(fetchedUser[0]);
+        const data = await fetchUserData();
+        setUser(data);
       } catch (e) {
         console.log(e);
       }
     };
 
-    fetchUserData();
+    getUser();
   }, []);
 
   useEffect(() => {
-    fetchHouseholdData();
+    getHouseHold();
   }, [user]);
 
   const hasTasks = household?.tasks;
@@ -104,7 +108,7 @@ export const CurrentTasks = () => {
                     index={index}
                     task={task}
                     household={household}
-                    fetchHouseholdData={fetchHouseholdData}
+                    fetchHouseholdData={getHouseHold}
                   />
                 ))}
           </Grid>

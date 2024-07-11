@@ -4,12 +4,13 @@ import { format } from "date-fns";
 import { Box, Typography, Checkbox, IconButton } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { customTheme, theme } from "../theme";
+import { theme } from "../theme";
 import { ITask } from "@/app/interfaces/task";
 import { IHousehold } from "@/app/interfaces/households";
 import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
 import { TaskFormModal } from "../modals/TaskFormModal";
 import { updateTask } from "@/app/lib/actions";
+import { Card } from "../card/Card";
 
 interface IProps {
   task: ITask;
@@ -54,18 +55,7 @@ export const TaskItem = ({
 
   const taskNum = index + 1;
   return (
-    <Box
-      sx={{
-        width: "400px",
-        padding: "12px",
-        backgroundColor: `${customTheme.colors.backgroundInverted}`,
-        borderRadius: "8px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        opacity: isDone ? 0.5 : 0.9,
-      }}
-    >
+    <Card isDone={isDone}>
       <DeleteTaskModal
         taskId={task.id}
         householdId={household.id}
@@ -138,6 +128,6 @@ export const TaskItem = ({
           </IconButton>
         </Box>
       </Box>
-    </Box>
+    </Card>
   );
 };

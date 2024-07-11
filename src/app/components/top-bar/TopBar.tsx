@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Button, Box, Typography } from "@mui/material";
 import { customTheme } from "@/app/ui/theme";
@@ -71,7 +72,9 @@ export const TopBar = () => {
           <>
             <Button color="primary">Tasks</Button>
             <Button color="primary">Summary</Button>
-            <Button color="primary">Settings</Button>
+            <Link href="/settings">
+              <Button color="primary">Settings</Button>
+            </Link>
           </>
         )}
         <Button
