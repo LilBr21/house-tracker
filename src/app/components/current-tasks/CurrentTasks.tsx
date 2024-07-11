@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getUser, getHousehold } from "@/app/lib/actions";
 import { IUser } from "@/app/interfaces/users";
 import { IHousehold } from "@/app/interfaces/households";
-import { NewTaskForm } from "@/app/ui/modals/NewTaskForm";
+import { TaskFormModal } from "@/app/ui/modals/TaskFormModal";
 import { TaskItem } from "@/app/ui/task-item/TaskItem";
 
 export const CurrentTasks = () => {
@@ -67,7 +67,7 @@ export const CurrentTasks = () => {
         zIndex: "1",
       }}
     >
-      <NewTaskForm
+      <TaskFormModal
         handleTaskModalClose={handleTaskModalClose}
         isTaskModalOpen={isTaskModalOpen}
         household={household}
@@ -89,22 +89,24 @@ export const CurrentTasks = () => {
           <Grid
             container
             columnGap={8}
-            rowGap={8}
+            rowGap={4}
             sx={{
               width: "100%",
               height: "90%",
             }}
           >
             {household.tasks &&
-              household.tasks.map((task, index) => (
-                <TaskItem
-                  key={index}
-                  index={index}
-                  task={task}
-                  householdId={household.id}
-                  fetchHouseholdData={fetchHouseholdData}
-                />
-              ))}
+              household.tasks
+                .filter((task) => task.done !== true)
+                .map((task, index) => (
+                  <TaskItem
+                    key={index}
+                    index={index}
+                    task={task}
+                    household={household}
+                    fetchHouseholdData={fetchHouseholdData}
+                  />
+                ))}
           </Grid>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>

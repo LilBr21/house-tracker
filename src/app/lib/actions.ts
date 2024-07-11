@@ -99,6 +99,31 @@ export const deleteTask = async (id: string, task_id: string) => {
   }
 };
 
+export const updateTask = async (id: string, task_id: string, updates: { [key: string]: any }) => {
+  try {
+    const response = await fetch(`${process.env.APP_URL}/api/update-task/?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        task_id: task_id,
+        ...updates
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const household = await response.json();
+      return household;
+    } else {
+      console.error('Failed to update task:', response.statusText);
+    }
+  } catch (e) {
+    console.error('Error updating task:', e);
+  }
+};
+
+
 
 export const getUser = async () => {
   try {
