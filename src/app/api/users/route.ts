@@ -19,3 +19,20 @@ export async function GET(request: Request) {
     }
 }
 
+export async function PUT(request: Request) {
+    try {
+        const { name, email } = await request.json();
+        
+        const response = await sql`
+            UPDATE users
+            SET name = ${name}
+            WHERE email = ${email}
+            RETURNING *;
+        `
+        
+        return NextResponse.json(response.rows[0]);
+    } catch (e) {
+        console.log(e);
+        return NextResponse.json({ message: 'Error updating user' }, { status: 500 });
+    }
+}

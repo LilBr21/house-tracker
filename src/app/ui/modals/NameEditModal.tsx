@@ -1,0 +1,97 @@
+"use client";
+import {
+  Box,
+  Typography,
+  Button,
+  Modal,
+  FormGroup,
+  FormControl,
+  Input,
+  InputLabel,
+} from "@mui/material";
+import { editUserName } from "@/app/lib/actions";
+import { customTheme } from "../theme";
+
+interface IProps {
+  handleModalClose: (isSubmitted?: boolean) => void;
+  isModalOpen: boolean;
+  userEmail: string;
+  userName: string;
+}
+
+export const NameEditModal = ({
+  handleModalClose,
+  isModalOpen,
+  userEmail,
+  userName,
+}: IProps) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string; // Get name as string
+    try {
+      await editUserName(name, userEmail); // Pass name directly
+      handleModalClose(true);
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
+  };
+
+  return (
+    <Modal
+      open={isModalOpen}
+      onClose={() => handleModalClose()}
+      sx={{ top: "20%", padding: "0 120px" }}
+    >
+      <Box
+        sx={{
+          backgroundColor: `${customTheme.colors.backgroundSecondary}`,
+          padding: "24px",
+          borderRadius: "8px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        <Typography
+          color="white"
+          variant="h6"
+          sx={{ marginBottom: "24px", textAlign: "center" }}
+        >
+          Enter new user name
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <FormGroup
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
+              color: `${customTheme.colors.textPrimary}`,
+            }}
+          >
+            <FormControl>
+              <InputLabel
+                htmlFor="userName"
+                sx={{
+                  color: `${customTheme.colors.textPrimary}`,
+                  marginBottom: "8px",
+                }}
+              >
+                User name
+              </InputLabel>
+              <Input
+                id="userName"
+                type="text"
+                name="name"
+                defaultValue={userName}
+              />
+            </FormControl>
+            <Button variant="contained" type="submit">
+              Save
+            </Button>
+          </FormGroup>
+        </form>
+      </Box>
+    </Modal>
+  );
+};
