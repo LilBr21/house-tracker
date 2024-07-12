@@ -1,14 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Box, Typography, List, ListItem } from "@mui/material";
+import { Box, Typography, List, ListItem, IconButton } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Card } from "@/app/ui/card/Card";
 import { theme } from "@/app/ui/theme";
 import { useGetHousehold } from "@/app/hooks/useGetHousehold";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { IHousehold } from "@/app/interfaces/households";
+import { HouseholdEditModal } from "@/app/ui/modals/HouseHoldEditModal";
 
 export const HouseholdSettings = () => {
   const [household, setHousehold] = useState<null | IHousehold>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { fetchUserData } = useGetUser();
   const { fetchHouseholdData } = useGetHousehold();
@@ -28,10 +31,23 @@ export const HouseholdSettings = () => {
     fetchHousehold();
   }, []);
 
+  const handleModalClose = (isSubmitted?: boolean) => {
+    if (isSubmitted) {
+      fetchHousehold();
+    }
+    setIsModalOpen(false);
+  };
+
   const pendingTasks = household?.tasks?.filter((task) => !task.done);
 
   return (
     <Card width="100%">
+      <HouseholdEditModal
+        isModalOpen={isModalOpen}
+        handleModalClose={handleModalClose}
+        householdId={household?.id ?? ""}
+        householdName={household?.name ?? ""}
+      />
       <Typography
         color={theme.palette.primary.dark}
         variant="h6"
@@ -48,10 +64,24 @@ export const HouseholdSettings = () => {
           padding: "12px",
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
           <Typography color={theme.palette.primary.dark}>
             Name: {household?.name}
           </Typography>
+          <IconButton
+            size="small"
+            sx={{ paddingRight: "8px" }}
+            color="secondary"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <EditOutlinedIcon />
+          </IconButton>
         </Box>
         <Box>
           <Typography color={theme.palette.primary.dark}>Members:</Typography>
@@ -65,7 +95,7 @@ export const HouseholdSettings = () => {
             ))}
           </List>
         </Box>
-        <Box>
+        <Box sx={{ height: "34px", display: "flex", alignItems: "center" }}>
           <Typography color={theme.palette.primary.dark}>
             Pending tasks: {pendingTasks?.length ?? 0}
           </Typography>
