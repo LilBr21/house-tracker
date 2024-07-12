@@ -139,6 +139,47 @@ export const getUser = async () => {
   }
 };
 
+export const editUserName = async (name: string, email: string) => {
+  try {
+    const response = await fetch(`${process.env.APP_URL}/api/users`, {
+      method: "PUT",
+      body: JSON.stringify({
+        name: name,
+        email: email,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const user = await response.json();
+      return user;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export const updateHousehold = async (id: string, name: string) => {
+  try {
+    const response = await fetch(`${process.env.APP_URL}/api/household/?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        name: name,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const household = await response.json();
+      return household;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const isSignedIn = async () => {
   const session = await auth();
   if (session?.user) {

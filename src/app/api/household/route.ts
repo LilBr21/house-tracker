@@ -17,3 +17,23 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: 'Error fetching household' }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+    const { name } = await request.json();
+
+    const response = await sql`
+      UPDATE household
+      SET name = ${name}
+      WHERE id = ${id}
+      RETURNING *`;
+    
+
+    return NextResponse.json(response.rows[0]);
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json({ message: 'Error updating household' }, { status: 500 });
+  }
+}
