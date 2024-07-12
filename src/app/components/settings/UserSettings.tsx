@@ -36,7 +36,7 @@ export const UserSettings = () => {
   };
 
   return (
-    <Card>
+    <Card width="100%">
       <NameEditModal
         handleModalClose={handleModalClose}
         isModalOpen={isModalOpen}

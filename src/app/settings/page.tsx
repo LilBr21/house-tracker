@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { UserSettings } from "../components/user-settings/UserSettings";
+import { UserSettings } from "../components/settings/UserSettings";
+import { HouseholdSettings } from "../components/settings/HouseholdSettings";
 
 export default async function SettingsPage() {
   return (
@@ -18,8 +19,16 @@ export default async function SettingsPage() {
       <Typography variant="h5" textAlign="center">
         Settings
       </Typography>
-      <Box sx={{ marginTop: "32px" }}>
+      <Box
+        sx={{
+          marginTop: "32px",
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "32px",
+        }}
+      >
         <UserSettings />
+        <HouseholdSettings />
       </Box>
     </Box>
   );
