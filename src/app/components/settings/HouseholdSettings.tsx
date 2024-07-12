@@ -7,7 +7,7 @@ import { theme } from "@/app/ui/theme";
 import { useGetHousehold } from "@/app/hooks/useGetHousehold";
 import { useGetUser } from "@/app/hooks/useGetUser";
 import { IHousehold } from "@/app/interfaces/households";
-import { HouseholdEditModal } from "@/app/ui/modals/HouseHoldEditModal";
+import { HouseholdEditModal } from "@/app/ui/modals/HouseholdModal";
 
 export const HouseholdSettings = () => {
   const [household, setHousehold] = useState<null | IHousehold>(null);
