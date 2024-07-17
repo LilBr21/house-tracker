@@ -8,7 +8,10 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { loginAuthenticate, signupAuthenticate } from "@/app/lib/actions";
+import {
+  loginAuthenticate,
+  signupAuthenticate,
+} from "@/app/lib/actions/authActions";
 import { customTheme } from "../../ui/theme";
 import { useFormState } from "react-dom";
 

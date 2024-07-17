@@ -1,6 +1,7 @@
 "use client";
-import { Box, Typography, Button, Modal } from "@mui/material";
-import { deleteTask } from "@/app/lib/actions";
+import { Box, Typography, Button, Modal, IconButton } from "@mui/material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { deleteTask } from "@/app/lib/actions/taskActions";
 import { customTheme } from "../theme";
 
 interface IProps {
@@ -58,8 +59,20 @@ export const DeleteTaskModal = ({
             justifyContent: "center",
             alignItems: "center",
             gap: "8px",
+            position: "relative",
           }}
         >
+          <IconButton
+            onClick={() => handleDeleteModalClose()}
+            sx={{
+              position: "absolute",
+              right: "8px",
+              top: "8px",
+              color: `${customTheme.colors.textPrimary}`,
+            }}
+          >
+            <CloseOutlinedIcon />
+          </IconButton>
           <Typography textAlign="center" color={customTheme.colors.textPrimary}>
             Are you sure you want to delete this task?
           </Typography>

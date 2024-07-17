@@ -1,5 +1,5 @@
 import { IUser } from "../interfaces/users";
-import { getHousehold } from "../lib/actions";
+import { getHousehold } from "../lib/actions/householdActions";
 
 export const useGetHousehold = () => {
 

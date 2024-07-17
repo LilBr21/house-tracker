@@ -9,7 +9,7 @@ import { ITask } from "@/app/interfaces/task";
 import { IHousehold } from "@/app/interfaces/households";
 import { DeleteTaskModal } from "@/app/ui/modals/DeleteTaskModal";
 import { TaskFormModal } from "../modals/TaskFormModal";
-import { updateTask } from "@/app/lib/actions";
+import { updateTask } from "@/app/lib/actions/taskActions";
 import { Card } from "../card/Card";
 
 interface IProps {

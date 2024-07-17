@@ -13,11 +13,13 @@ import {
   Select,
   FormHelperText,
   SelectChangeEvent,
+  IconButton,
 } from "@mui/material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useFormState } from "react-dom";
 import { IHousehold } from "@/app/interfaces/households";
 import { ITask } from "@/app/interfaces/task";
-import { addTask, updateTask } from "@/app/lib/actions";
+import { addTask, updateTask } from "@/app/lib/actions/taskActions";
 import { customTheme } from "../theme";
 
 interface IProps {
@@ -77,18 +79,36 @@ export const TaskFormModal = ({
     <Modal
       open={isTaskModalOpen}
       onClose={() => handleTaskModalClose()}
-      sx={{ top: "20%", padding: "0 120px" }}
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Box
         sx={{
           backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-          padding: "24px",
+          padding: "36px 24px",
           borderRadius: "8px",
           display: "flex",
           flexDirection: "column",
           gap: "8px",
+          width: "50%",
+          position: "relative",
         }}
       >
+        <IconButton
+          onClick={() => handleTaskModalClose()}
+          sx={{
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+            color: `${customTheme.colors.textPrimary}`,
+          }}
+        >
+          <CloseOutlinedIcon />
+        </IconButton>
         <Typography
           color="white"
           variant="h6"
@@ -120,6 +140,10 @@ export const TaskFormModal = ({
                 type="text"
                 name="name"
                 defaultValue={task?.name ?? ""}
+                sx={{
+                  color: `${customTheme.colors.textPrimary}`,
+                  paddingLeft: "12px",
+                }}
               />
             </FormControl>
             <FormControl>
@@ -189,7 +213,11 @@ export const TaskFormModal = ({
                 defaultValue={task?.notes ?? ""}
               />
             </FormControl>
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ "&:hover": { color: `${customTheme.colors.textPrimary}` } }}
+            >
               {isEditing ? "Save" : "Add task"}
             </Button>
           </FormGroup>

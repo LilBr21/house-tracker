@@ -8,8 +8,10 @@ import {
   FormControl,
   Input,
   InputLabel,
+  IconButton,
 } from "@mui/material";
-import { updateHousehold } from "@/app/lib/actions";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { updateHousehold } from "@/app/lib/actions/householdActions";
 import { customTheme } from "../theme";
 
 interface IProps {
@@ -46,13 +48,25 @@ export const HouseholdEditModal = ({
       <Box
         sx={{
           backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-          padding: "24px",
+          padding: "36px 24px",
           borderRadius: "8px",
           display: "flex",
           flexDirection: "column",
           gap: "8px",
+          position: "relative",
         }}
       >
+        <IconButton
+          onClick={() => handleModalClose()}
+          sx={{
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+            color: `${customTheme.colors.textPrimary}`,
+          }}
+        >
+          <CloseOutlinedIcon />
+        </IconButton>
         <Typography
           color="white"
           variant="h6"
