@@ -5,9 +5,15 @@ interface IProps {
   children: React.ReactNode;
   isDone?: boolean;
   width?: string;
+  justifyContent?: string;
 }
 
-export const Card = ({ children, isDone, width = "400px" }: IProps) => {
+export const Card = ({
+  children,
+  isDone,
+  width = "400px",
+  justifyContent = "space-between",
+}: IProps) => {
   return (
     <Box
       sx={{
@@ -17,7 +23,7 @@ export const Card = ({ children, isDone, width = "400px" }: IProps) => {
         borderRadius: "8px",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
+        justifyContent: `${justifyContent}`,
         opacity: isDone ? 0.5 : 0.9,
       }}
     >

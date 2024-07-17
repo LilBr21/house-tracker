@@ -8,8 +8,10 @@ import {
   FormControl,
   Input,
   InputLabel,
+  IconButton,
 } from "@mui/material";
-import { editUserName } from "@/app/lib/actions";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { editUserName } from "@/app/lib/actions/userActions";
 import { customTheme } from "../theme";
 
 interface IProps {
@@ -41,18 +43,36 @@ export const NameEditModal = ({
     <Modal
       open={isModalOpen}
       onClose={() => handleModalClose()}
-      sx={{ top: "20%", padding: "0 120px" }}
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Box
         sx={{
           backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-          padding: "24px",
+          padding: "36px 24px",
           borderRadius: "8px",
           display: "flex",
           flexDirection: "column",
           gap: "8px",
+          width: "50%",
+          position: "relative",
         }}
       >
+        <IconButton
+          onClick={() => handleModalClose()}
+          sx={{
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+            color: `${customTheme.colors.textPrimary}`,
+          }}
+        >
+          <CloseOutlinedIcon />
+        </IconButton>
         <Typography
           color="white"
           variant="h6"
@@ -75,6 +95,7 @@ export const NameEditModal = ({
                 sx={{
                   color: `${customTheme.colors.textPrimary}`,
                   marginBottom: "8px",
+                  opacity: 0.8,
                 }}
               >
                 User name
@@ -84,9 +105,14 @@ export const NameEditModal = ({
                 type="text"
                 name="name"
                 defaultValue={userName}
+                sx={{ color: `${customTheme.colors.textPrimary}` }}
               />
             </FormControl>
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ "&:hover": { color: `${customTheme.colors.textPrimary}` } }}
+            >
               Save
             </Button>
           </FormGroup>

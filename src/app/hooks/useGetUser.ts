@@ -1,4 +1,4 @@
-import { getUser } from "../lib/actions";
+import { getUser } from "../lib/actions/userActions";
 
 export const useGetUser = () => {
 

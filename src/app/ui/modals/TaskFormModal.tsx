@@ -13,11 +13,13 @@ import {
   Select,
   FormHelperText,
   SelectChangeEvent,
+  IconButton,
 } from "@mui/material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useFormState } from "react-dom";
 import { IHousehold } from "@/app/interfaces/households";
 import { ITask } from "@/app/interfaces/task";
-import { addTask, updateTask } from "@/app/lib/actions";
+import { addTask, updateTask } from "@/app/lib/actions/taskActions";
 import { customTheme } from "../theme";
 
 interface IProps {
@@ -82,13 +84,25 @@ export const TaskFormModal = ({
       <Box
         sx={{
           backgroundColor: `${customTheme.colors.backgroundSecondary}`,
-          padding: "24px",
+          padding: "36px 24px",
           borderRadius: "8px",
           display: "flex",
           flexDirection: "column",
           gap: "8px",
+          position: "relative",
         }}
       >
+        <IconButton
+          onClick={() => handleTaskModalClose()}
+          sx={{
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+            color: `${customTheme.colors.textPrimary}`,
+          }}
+        >
+          <CloseOutlinedIcon />
+        </IconButton>
         <Typography
           color="white"
           variant="h6"

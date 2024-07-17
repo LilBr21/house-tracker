@@ -41,7 +41,7 @@ export const HouseholdSettings = () => {
   const pendingTasks = household?.tasks?.filter((task) => !task.done);
 
   return (
-    <Card width="100%">
+    <Card width="100%" justifyContent="flex-start">
       <HouseholdEditModal
         isModalOpen={isModalOpen}
         handleModalClose={handleModalClose}

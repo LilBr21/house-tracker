@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Button, Box, Typography } from "@mui/material";
 import { customTheme } from "@/app/ui/theme";
-import { isSignedIn, logOut } from "@/app/lib/actions";
+import { isSignedIn, logOut } from "@/app/lib/actions/authActions";
 
 export const TopBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

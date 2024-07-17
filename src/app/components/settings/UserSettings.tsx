@@ -36,7 +36,7 @@ export const UserSettings = () => {
   };
 
   return (
-    <Card width="100%">
+    <Card width="100%" justifyContent="flex-start">
       <NameEditModal
         handleModalClose={handleModalClose}
         isModalOpen={isModalOpen}
