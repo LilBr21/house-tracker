@@ -79,7 +79,12 @@ export const TaskFormModal = ({
     <Modal
       open={isTaskModalOpen}
       onClose={() => handleTaskModalClose()}
-      sx={{ top: "20%", padding: "0 120px" }}
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Box
         sx={{
@@ -89,6 +94,7 @@ export const TaskFormModal = ({
           display: "flex",
           flexDirection: "column",
           gap: "8px",
+          width: "50%",
           position: "relative",
         }}
       >
@@ -134,6 +140,10 @@ export const TaskFormModal = ({
                 type="text"
                 name="name"
                 defaultValue={task?.name ?? ""}
+                sx={{
+                  color: `${customTheme.colors.textPrimary}`,
+                  paddingLeft: "12px",
+                }}
               />
             </FormControl>
             <FormControl>
@@ -203,7 +213,11 @@ export const TaskFormModal = ({
                 defaultValue={task?.notes ?? ""}
               />
             </FormControl>
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ "&:hover": { color: `${customTheme.colors.textPrimary}` } }}
+            >
               {isEditing ? "Save" : "Add task"}
             </Button>
           </FormGroup>
